@@ -5,16 +5,17 @@ class matrixExeption : public std::exception
 {
 public:
     matrixExeption(const std::string& message) : message{ message }
-    {}
+    {
+    }
     const char* what() const noexcept override
     {
-        return message.c_str();  //получаем из std::string строку const char*
+        return message.c_str();  //РїРѕР»СѓС‡Р°РµРј РёР· std::string СЃС‚СЂРѕРєСѓ const char*
     }
 private:
-    std::string message;  //сообщение об ошибке
+    std::string message;  //СЃРѕРѕР±С‰РµРЅРёРµ РѕР± РѕС€РёР±РєРµ
 };
 
-// Приватные методы
+// РџСЂРёРІР°С‚РЅС‹Рµ РјРµС‚РѕРґС‹
 
 void Matrix::allocateMemory() {
     data = new double* [rows];
@@ -32,16 +33,16 @@ void Matrix::freeMemory() {
     delete[] data;
 }
 
-// Конструктор пустой матрицы
-Matrix::Matrix(int rows, int cols) : rows(rows), cols(cols) { // с помощью : мы напрямую передаем введенные в консткуктор данные в элементы класса
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїСѓСЃС‚РѕР№ РјР°С‚СЂРёС†С‹
+Matrix::Matrix(int rows, int cols) : rows(rows), cols(cols) { // СЃ РїРѕРјРѕС‰СЊСЋ : РјС‹ РЅР°РїСЂСЏРјСѓСЋ РїРµСЂРµРґР°РµРј РІРІРµРґРµРЅРЅС‹Рµ РІ РєРѕРЅСЃС‚РєСѓРєС‚РѕСЂ РґР°РЅРЅС‹Рµ РІ СЌР»РµРјРµРЅС‚С‹ РєР»Р°СЃСЃР°
     if (rows <= 0 || cols <= 0) {
         throw matrixExeption("Rows and columns must be greater than 0");
     }
     allocateMemory();
 }
 
-// ККонструктор с инициализацией значений из массива
-Matrix::Matrix(int rows, int cols, double* arr) : rows(rows), cols(cols){
+// РљРљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ РёРЅРёС†РёР°Р»РёР·Р°С†РёРµР№ Р·РЅР°С‡РµРЅРёР№ РёР· РјР°СЃСЃРёРІР°
+Matrix::Matrix(int rows, int cols, double* arr) : rows(rows), cols(cols) {
 
     if (rows <= 0 || cols <= 0) {
         throw matrixExeption("Rows and columns must be greater than 0");
@@ -55,20 +56,20 @@ Matrix::Matrix(int rows, int cols, double* arr) : rows(rows), cols(cols){
         }
     }
 }
-// ККонструктор с инициализацией значений из массива объявленногодинамически
+// РљРљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ РёРЅРёС†РёР°Р»РёР·Р°С†РёРµР№ Р·РЅР°С‡РµРЅРёР№ РёР· РјР°СЃСЃРёРІР° РѕР±СЉСЏРІР»РµРЅРЅРѕРіРѕРґРёРЅР°РјРёС‡РµСЃРєРё
 Matrix::Matrix(int rows, int cols, double*& arr) : rows(rows), cols(cols) {
     if (rows <= 0 || cols <= 0) {
         throw matrixExeption("Rows and columns must be greater than 0");
     }
 
-    // Указываем `data` на переданный массив, распределяем его по строкам и столбцам
+    // РЈРєР°Р·С‹РІР°РµРј `data` РЅР° РїРµСЂРµРґР°РЅРЅС‹Р№ РјР°СЃСЃРёРІ, СЂР°СЃРїСЂРµРґРµР»СЏРµРј РµРіРѕ РїРѕ СЃС‚СЂРѕРєР°Рј Рё СЃС‚РѕР»Р±С†Р°Рј
     data = new double* [rows];
     for (int i = 0; i < rows; ++i) {
         data[i] = &arr[i * cols];
     }
 }
 
-// Конструктор с инициализацией значений из списка
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ РёРЅРёС†РёР°Р»РёР·Р°С†РёРµР№ Р·РЅР°С‡РµРЅРёР№ РёР· СЃРїРёСЃРєР°
 Matrix::Matrix(int rows, int cols, std::initializer_list<double> values) : rows(rows), cols(cols) {
 
     if (rows <= 0 || cols <= 0) {
@@ -81,7 +82,7 @@ Matrix::Matrix(int rows, int cols, std::initializer_list<double> values) : rows(
 
     allocateMemory();
 
-    // Заполнение матрицы из списка значений
+    // Р—Р°РїРѕР»РЅРµРЅРёРµ РјР°С‚СЂРёС†С‹ РёР· СЃРїРёСЃРєР° Р·РЅР°С‡РµРЅРёР№
     auto it = values.begin();
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
@@ -91,7 +92,7 @@ Matrix::Matrix(int rows, int cols, std::initializer_list<double> values) : rows(
     }
 }
 
-// Конструктор копирования
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 Matrix::Matrix(const Matrix& other) : rows(other.rows), cols(other.cols) {
     allocateMemory();
     for (int i = 0; i < rows; ++i) {
@@ -101,7 +102,7 @@ Matrix::Matrix(const Matrix& other) : rows(other.rows), cols(other.cols) {
     }
 }
 
-// Оператор присваивания
+// РћРїРµСЂР°С‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
 Matrix& Matrix::operator=(const Matrix& other) {
     if (this == &other) return *this;
 
@@ -120,12 +121,12 @@ Matrix& Matrix::operator=(const Matrix& other) {
     return *this;
 }
 
-// Деструктор
+// Р”РµСЃС‚СЂСѓРєС‚РѕСЂ
 Matrix::~Matrix() {
     freeMemory();
 }
 
-// Методы
+// РњРµС‚РѕРґС‹
 
 int Matrix::getRows() const {
     return rows;
@@ -158,28 +159,28 @@ void Matrix::print() const {
     }
 }
 
-// Функция для обмена строк
+// Р¤СѓРЅРєС†РёСЏ РґР»СЏ РѕР±РјРµРЅР° СЃС‚СЂРѕРє
 void Matrix::swapRows(int row1, int row2) {
     if (row1 < 0 || row1 >= rows || row2 < 0 || row2 >= rows) {
         throw matrixExeption("Row indices are out of range");
     }
 
-    std::swap(data[row1], data[row2]); // Меняем указатели на строки
+    std::swap(data[row1], data[row2]); // РњРµРЅСЏРµРј СѓРєР°Р·Р°С‚РµР»Рё РЅР° СЃС‚СЂРѕРєРё
 }
 
-// Функция для обмена столбцов
+// Р¤СѓРЅРєС†РёСЏ РґР»СЏ РѕР±РјРµРЅР° СЃС‚РѕР»Р±С†РѕРІ
 void Matrix::swapColumns(int col1, int col2) {
     if (col1 < 0 || col1 >= cols || col2 < 0 || col2 >= cols) {
         throw matrixExeption("Column indices are out of range");
     }
 
-    // Обмен значений столбцов
+    // РћР±РјРµРЅ Р·РЅР°С‡РµРЅРёР№ СЃС‚РѕР»Р±С†РѕРІ
     for (int i = 0; i < rows; ++i) {
         std::swap(data[i][col1], data[i][col2]);
     }
 }
 
-// Умножение строки на число
+// РЈРјРЅРѕР¶РµРЅРёРµ СЃС‚СЂРѕРєРё РЅР° С‡РёСЃР»Рѕ
 void Matrix::multiplyRow(int row, double scalar) {
     if (row < 0 || row >= rows) {
         throw matrixExeption("Row index is out of range");
@@ -190,7 +191,7 @@ void Matrix::multiplyRow(int row, double scalar) {
     }
 }
 
-// Умножение столбца на число
+// РЈРјРЅРѕР¶РµРЅРёРµ СЃС‚РѕР»Р±С†Р° РЅР° С‡РёСЃР»Рѕ
 void Matrix::multiplyColumns(int col, double scalar) {
     if (col < 0 || col >= cols) {
         throw matrixExeption("Column index is out of range");
@@ -201,7 +202,7 @@ void Matrix::multiplyColumns(int col, double scalar) {
     }
 }
 
-// Прибавление к строке другой строки, умноженной на коэффициент
+// РџСЂРёР±Р°РІР»РµРЅРёРµ Рє СЃС‚СЂРѕРєРµ РґСЂСѓРіРѕР№ СЃС‚СЂРѕРєРё, СѓРјРЅРѕР¶РµРЅРЅРѕР№ РЅР° РєРѕСЌС„С„РёС†РёРµРЅС‚
 void Matrix::addRowMultiple(int sourceRow, int targetRow, double scalar) {
     if (targetRow < 0 || targetRow >= rows || sourceRow < 0 || sourceRow >= rows) {
         throw matrixExeption("Row indices are out of range");
@@ -212,7 +213,7 @@ void Matrix::addRowMultiple(int sourceRow, int targetRow, double scalar) {
     }
 }
 
-// Прибавление к столбцу другого столбца, умноженного на коэффициент
+// РџСЂРёР±Р°РІР»РµРЅРёРµ Рє СЃС‚РѕР»Р±С†Сѓ РґСЂСѓРіРѕРіРѕ СЃС‚РѕР»Р±С†Р°, СѓРјРЅРѕР¶РµРЅРЅРѕРіРѕ РЅР° РєРѕСЌС„С„РёС†РёРµРЅС‚
 void Matrix::addColumnMultiple(int sourceCol, int targetCol, double scalar) {
     if (targetCol < 0 || targetCol >= cols || sourceCol < 0 || sourceCol >= cols) {
         throw matrixExeption("Column indices are out of range");
@@ -223,7 +224,7 @@ void Matrix::addColumnMultiple(int sourceCol, int targetCol, double scalar) {
     }
 }
 
-// Нахождение следа матрицы
+// РќР°С…РѕР¶РґРµРЅРёРµ СЃР»РµРґР° РјР°С‚СЂРёС†С‹
 double Matrix::trace() const {
     if (rows != cols) {
         throw matrixExeption("Trace is defined only for square matrices");
@@ -237,31 +238,31 @@ double Matrix::trace() const {
     return traceSum;
 }
 
-// Транспонирование
+// РўСЂР°РЅСЃРїРѕРЅРёСЂРѕРІР°РЅРёРµ
 Matrix Matrix::transpose() const {
-    Matrix result(cols, rows); // Размеры меняются местами
+    Matrix result(cols, rows); // Р Р°Р·РјРµСЂС‹ РјРµРЅСЏСЋС‚СЃСЏ РјРµСЃС‚Р°РјРё
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
-            result.data[j][i] = data[i][j]; // Переставляем элементы
+            result.data[j][i] = data[i][j]; // РџРµСЂРµСЃС‚Р°РІР»СЏРµРј СЌР»РµРјРµРЅС‚С‹
         }
     }
     return result;
 }
 
-// Определитель методом Гаусса
+// РћРїСЂРµРґРµР»РёС‚РµР»СЊ РјРµС‚РѕРґРѕРј Р“Р°СѓСЃСЃР°
 double Matrix::determinant() const {
     if (rows != cols) {
         throw matrixExeption("Determinant is defined only for square matrices");
     }
 
-    // Копируем текущую матрицу для работы
+    // РљРѕРїРёСЂСѓРµРј С‚РµРєСѓС‰СѓСЋ РјР°С‚СЂРёС†Сѓ РґР»СЏ СЂР°Р±РѕС‚С‹
     Matrix temp(*this);
     double det = 1.0;
     int n = rows;
 
-    // Прямой ход Гаусса
+    // РџСЂСЏРјРѕР№ С…РѕРґ Р“Р°СѓСЃСЃР°
     for (int k = 0; k < n; ++k) {
-        // Поиск максимального элемента в текущем столбце
+        // РџРѕРёСЃРє РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РІ С‚РµРєСѓС‰РµРј СЃС‚РѕР»Р±С†Рµ
         int maxRow = k;
         for (int i = k + 1; i < n; ++i) {
             if (std::fabs(temp.at(i, k)) > std::fabs(temp.at(maxRow, k))) {
@@ -269,52 +270,52 @@ double Matrix::determinant() const {
             }
         }
 
-        // Если ведущий элемент равен 0, определитель равен 0
+        // Р•СЃР»Рё РІРµРґСѓС‰РёР№ СЌР»РµРјРµРЅС‚ СЂР°РІРµРЅ 0, РѕРїСЂРµРґРµР»РёС‚РµР»СЊ СЂР°РІРµРЅ 0
         if (std::fabs(temp.at(maxRow, k)) < 1e-9) {
             return 0.0;
         }
 
-        // Если текущая строка не максимальная, меняем строки местами
+        // Р•СЃР»Рё С‚РµРєСѓС‰Р°СЏ СЃС‚СЂРѕРєР° РЅРµ РјР°РєСЃРёРјР°Р»СЊРЅР°СЏ, РјРµРЅСЏРµРј СЃС‚СЂРѕРєРё РјРµСЃС‚Р°РјРё
         if (maxRow != k) {
             temp.swapRows(k, maxRow);
-            det *= -1; // Меняем знак определителя
+            det *= -1; // РњРµРЅСЏРµРј Р·РЅР°Рє РѕРїСЂРµРґРµР»РёС‚РµР»СЏ
         }
 
-        // Нормализуем текущую строку так, чтобы ведущий элемент стал равен 1
+        // РќРѕСЂРјР°Р»РёР·СѓРµРј С‚РµРєСѓС‰СѓСЋ СЃС‚СЂРѕРєСѓ С‚Р°Рє, С‡С‚РѕР±С‹ РІРµРґСѓС‰РёР№ СЌР»РµРјРµРЅС‚ СЃС‚Р°Р» СЂР°РІРµРЅ 1
         double diagElement = temp.at(k, k);
-        det *= diagElement; // Умножаем определитель на диагональный элемент
+        det *= diagElement; // РЈРјРЅРѕР¶Р°РµРј РѕРїСЂРµРґРµР»РёС‚РµР»СЊ РЅР° РґРёР°РіРѕРЅР°Р»СЊРЅС‹Р№ СЌР»РµРјРµРЅС‚
         temp.multiplyRow(k, 1.0 / diagElement);
 
-        // Обнуляем элементы ниже текущего в текущем столбце
+        // РћР±РЅСѓР»СЏРµРј СЌР»РµРјРµРЅС‚С‹ РЅРёР¶Рµ С‚РµРєСѓС‰РµРіРѕ РІ С‚РµРєСѓС‰РµРј СЃС‚РѕР»Р±С†Рµ
         for (int i = k + 1; i < n; ++i) {
             double num = temp.at(i, k);
-            temp.addRowMultiple(i, k, -num); // Вычитаем текущую строку
+            temp.addRowMultiple(i, k, -num); // Р’С‹С‡РёС‚Р°РµРј С‚РµРєСѓС‰СѓСЋ СЃС‚СЂРѕРєСѓ
         }
     }
 
     return det;
 }
 
-// Нахождение обратной матрицы с использованием элементарных преобразований
+// РќР°С…РѕР¶РґРµРЅРёРµ РѕР±СЂР°С‚РЅРѕР№ РјР°С‚СЂРёС†С‹ СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј СЌР»РµРјРµРЅС‚Р°СЂРЅС‹С… РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёР№
 Matrix Matrix::inverse() const {
     if (rows != cols) {
         throw matrixExeption("Inverse is defined only for square matrices");
     }
 
     int n = rows;
-    Matrix augmented(n, 2 * n); // Создаём расширенную матрицу (A | I)
+    Matrix augmented(n, 2 * n); // РЎРѕР·РґР°С‘Рј СЂР°СЃС€РёСЂРµРЅРЅСѓСЋ РјР°С‚СЂРёС†Сѓ (A | I)
 
-    // Заполняем расширенную матрицу: левая часть — A, правая часть — E
+    // Р—Р°РїРѕР»РЅСЏРµРј СЂР°СЃС€РёСЂРµРЅРЅСѓСЋ РјР°С‚СЂРёС†Сѓ: Р»РµРІР°СЏ С‡Р°СЃС‚СЊ вЂ” A, РїСЂР°РІР°СЏ С‡Р°СЃС‚СЊ вЂ” E
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
-            augmented.at(i, j) = data[i][j];       // Левая часть — A
-            augmented.at(i, n + j) = (i == j) ? 1 : 0; // Правая часть — E
+            augmented.at(i, j) = data[i][j];       // Р›РµРІР°СЏ С‡Р°СЃС‚СЊ вЂ” A
+            augmented.at(i, n + j) = (i == j) ? 1 : 0; // РџСЂР°РІР°СЏ С‡Р°СЃС‚СЊ вЂ” E
         }
     }
 
-    // Прямой ход: приведение к треугольному виду
+    // РџСЂСЏРјРѕР№ С…РѕРґ: РїСЂРёРІРµРґРµРЅРёРµ Рє С‚СЂРµСѓРіРѕР»СЊРЅРѕРјСѓ РІРёРґСѓ
     for (int k = 0; k < n; ++k) {
-        // Поиск строки с максимальным элементом в текущем столбце
+        // РџРѕРёСЃРє СЃС‚СЂРѕРєРё СЃ РјР°РєСЃРёРјР°Р»СЊРЅС‹Рј СЌР»РµРјРµРЅС‚РѕРј РІ С‚РµРєСѓС‰РµРј СЃС‚РѕР»Р±С†Рµ
         int maxRow = k;
         for (int i = k + 1; i < n; ++i) {
             if (std::fabs(augmented.at(i, k)) > std::fabs(augmented.at(maxRow, k))) {
@@ -322,23 +323,23 @@ Matrix Matrix::inverse() const {
             }
         }
 
-        // Если элемент на диагонали равен 0, обратную матрицу невовзможно получить
+        // Р•СЃР»Рё СЌР»РµРјРµРЅС‚ РЅР° РґРёР°РіРѕРЅР°Р»Рё СЂР°РІРµРЅ 0, РѕР±СЂР°С‚РЅСѓСЋ РјР°С‚СЂРёС†Сѓ РЅРµРІРѕРІР·РјРѕР¶РЅРѕ РїРѕР»СѓС‡РёС‚СЊ
         if (std::fabs(augmented.at(maxRow, k)) < 1e-9) {
             throw matrixExeption("Matrix is singular and cannot be inverted");
         }
 
-        // Меняем строки местами, если это необходимо
+        // РњРµРЅСЏРµРј СЃС‚СЂРѕРєРё РјРµСЃС‚Р°РјРё, РµСЃР»Рё СЌС‚Рѕ РЅРµРѕР±С…РѕРґРёРјРѕ
         if (maxRow != k) {
             augmented.swapRows(k, maxRow);
         }
 
-        // Нормализуем текущую строку
+        // РќРѕСЂРјР°Р»РёР·СѓРµРј С‚РµРєСѓС‰СѓСЋ СЃС‚СЂРѕРєСѓ
         double diagElement = augmented.at(k, k);
         for (int j = 0; j < 2 * n; ++j) {
             augmented.at(k, j) /= diagElement;
         }
 
-        // Обнуляем элементы ниже текущего
+        // РћР±РЅСѓР»СЏРµРј СЌР»РµРјРµРЅС‚С‹ РЅРёР¶Рµ С‚РµРєСѓС‰РµРіРѕ
         for (int i = k + 1; i < n; ++i) {
             double num = augmented.at(i, k);
             for (int j = 0; j < 2 * n; ++j) {
@@ -347,7 +348,7 @@ Matrix Matrix::inverse() const {
         }
     }
 
-    // Обратный ход. приведение к единичной матрице
+    // РћР±СЂР°С‚РЅС‹Р№ С…РѕРґ. РїСЂРёРІРµРґРµРЅРёРµ Рє РµРґРёРЅРёС‡РЅРѕР№ РјР°С‚СЂРёС†Рµ
     for (int k = n - 1; k >= 0; --k) {
         for (int i = k - 1; i >= 0; --i) {
             double num = augmented.at(i, k);
@@ -357,7 +358,7 @@ Matrix Matrix::inverse() const {
         }
     }
 
-    // Извлекаем обратную матрицу
+    // РР·РІР»РµРєР°РµРј РѕР±СЂР°С‚РЅСѓСЋ РјР°С‚СЂРёС†Сѓ
     Matrix inverseMatrix(n, n);
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
@@ -369,7 +370,7 @@ Matrix Matrix::inverse() const {
 }
 
 
-// Операторы
+// РћРїРµСЂР°С‚РѕСЂС‹
 double& Matrix::operator()(int row, int col) {
     if (row < 0 || row >= rows || col < 0 || col >= cols) {
         throw matrixExeption("Matrix indices out of range");
@@ -386,73 +387,73 @@ const double& Matrix::operator()(int row, int col) const {
 
 bool Matrix::operator>(const Matrix& other) const {
     if (rows != other.rows || cols != other.cols) {
-        throw std::invalid_argument("Matrix dimensions must match for comparison"); // Выбрасывваем исключение т.к. операция неприменима
+        throw std::invalid_argument("Matrix dimensions must match for comparison"); // Р’С‹Р±СЂР°СЃС‹РІРІР°РµРј РёСЃРєР»СЋС‡РµРЅРёРµ С‚.Рє. РѕРїРµСЂР°С†РёСЏ РЅРµРїСЂРёРјРµРЅРёРјР°
     }
 
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
             if (data[i][j] <= other.data[i][j]) {
-                return false; // Если хотя бы один элемент не больше, возвращаем false
+                return false; // Р•СЃР»Рё С…РѕС‚СЏ Р±С‹ РѕРґРёРЅ СЌР»РµРјРµРЅС‚ РЅРµ Р±РѕР»СЊС€Рµ, РІРѕР·РІСЂР°С‰Р°РµРј false
             }
         }
     }
-    return true; // Все элементы больше
+    return true; // Р’СЃРµ СЌР»РµРјРµРЅС‚С‹ Р±РѕР»СЊС€Рµ
 }
 
 bool Matrix::operator<(const Matrix& other) const {
     if (rows != other.rows || cols != other.cols) {
-        throw std::invalid_argument("Matrix dimensions must match for comparison"); // Выбрасывваем исключение т.к. операция неприменима
+        throw std::invalid_argument("Matrix dimensions must match for comparison"); // Р’С‹Р±СЂР°СЃС‹РІРІР°РµРј РёСЃРєР»СЋС‡РµРЅРёРµ С‚.Рє. РѕРїРµСЂР°С†РёСЏ РЅРµРїСЂРёРјРµРЅРёРјР°
     }
 
 
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
             if (data[i][j] >= other.data[i][j]) {
-                return false; // Если хотя бы один элемент не меньше, возвращаем false
+                return false; // Р•СЃР»Рё С…РѕС‚СЏ Р±С‹ РѕРґРёРЅ СЌР»РµРјРµРЅС‚ РЅРµ РјРµРЅСЊС€Рµ, РІРѕР·РІСЂР°С‰Р°РµРј false
             }
         }
     }
-    return true; // Все элементы меньше
+    return true; // Р’СЃРµ СЌР»РµРјРµРЅС‚С‹ РјРµРЅСЊС€Рµ
 }
 
 bool Matrix::operator==(const Matrix& other) const {
     if (rows != other.rows || cols != other.cols) {
-        return false; // Матрицы разного размера не равны
-    } // Не выбрасываем исключение т.к. результат очевиден
+        return false; // РњР°С‚СЂРёС†С‹ СЂР°Р·РЅРѕРіРѕ СЂР°Р·РјРµСЂР° РЅРµ СЂР°РІРЅС‹
+    } // РќРµ РІС‹Р±СЂР°СЃС‹РІР°РµРј РёСЃРєР»СЋС‡РµРЅРёРµ С‚.Рє. СЂРµР·СѓР»СЊС‚Р°С‚ РѕС‡РµРІРёРґРµРЅ
 
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
             if (data[i][j] != other.data[i][j]) {
-                return false; // Найдено несовпадение элементов
+                return false; // РќР°Р№РґРµРЅРѕ РЅРµСЃРѕРІРїР°РґРµРЅРёРµ СЌР»РµРјРµРЅС‚РѕРІ
             }
         }
     }
-    return true; // Все элементы равны
+    return true; // Р’СЃРµ СЌР»РµРјРµРЅС‚С‹ СЂР°РІРЅС‹
 }
 
 bool Matrix::operator!=(const Matrix& other) const {
-    return !(*this == other); // Используем ==
+    return !(*this == other); // РСЃРїРѕР»СЊР·СѓРµРј ==
 }
 
-// Префиксный инкремент (++m): прибавление единичной матрицы
+// РџСЂРµС„РёРєСЃРЅС‹Р№ РёРЅРєСЂРµРјРµРЅС‚ (++m): РїСЂРёР±Р°РІР»РµРЅРёРµ РµРґРёРЅРёС‡РЅРѕР№ РјР°С‚СЂРёС†С‹
 Matrix& Matrix::operator++() {
     if (rows != cols) {
         throw matrixExeption("Increment is defined only for square matrices");
     }
     for (int i = 0; i < rows; ++i) {
-        ++data[i][i]; // Прибавляем 1 к диагональным элементам
+        ++data[i][i]; // РџСЂРёР±Р°РІР»СЏРµРј 1 Рє РґРёР°РіРѕРЅР°Р»СЊРЅС‹Рј СЌР»РµРјРµРЅС‚Р°Рј
     }
-    return *this; // Возвращаем текущий объект
+    return *this; // Р’РѕР·РІСЂР°С‰Р°РµРј С‚РµРєСѓС‰РёР№ РѕР±СЉРµРєС‚
 }
 
-// Постфиксный инкремент (m++): прибавление единичной матрицы
+// РџРѕСЃС‚С„РёРєСЃРЅС‹Р№ РёРЅРєСЂРµРјРµРЅС‚ (m++): РїСЂРёР±Р°РІР»РµРЅРёРµ РµРґРёРЅРёС‡РЅРѕР№ РјР°С‚СЂРёС†С‹
 Matrix Matrix::operator++(int) {
     Matrix temp(*this);
     ++(*this);
     return temp;
 }
 
-// Префиксный декремент (--m): вычитание единичной матрицы
+// РџСЂРµС„РёРєСЃРЅС‹Р№ РґРµРєСЂРµРјРµРЅС‚ (--m): РІС‹С‡РёС‚Р°РЅРёРµ РµРґРёРЅРёС‡РЅРѕР№ РјР°С‚СЂРёС†С‹
 Matrix& Matrix::operator--() {
     if (rows != cols) {
         throw matrixExeption("Decrement is defined only for square matrices");
@@ -463,7 +464,7 @@ Matrix& Matrix::operator--() {
     return *this;
 }
 
-// Постфиксный декремент (m--): вычитание единичной матрицы
+// РџРѕСЃС‚С„РёРєСЃРЅС‹Р№ РґРµРєСЂРµРјРµРЅС‚ (m--): РІС‹С‡РёС‚Р°РЅРёРµ РµРґРёРЅРёС‡РЅРѕР№ РјР°С‚СЂРёС†С‹
 Matrix Matrix::operator--(int) {
     Matrix temp(*this);
     --(*this);
@@ -471,8 +472,8 @@ Matrix Matrix::operator--(int) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
-    matrix.print(); // Вызов функции print для вывода матрицы
-    return os;      // Возврат потока для цепочности вызовов
+    matrix.print(); // Р’С‹Р·РѕРІ С„СѓРЅРєС†РёРё print РґР»СЏ РІС‹РІРѕРґР° РјР°С‚СЂРёС†С‹
+    return os;      // Р’РѕР·РІСЂР°С‚ РїРѕС‚РѕРєР° РґР»СЏ С†РµРїРѕС‡РЅРѕСЃС‚Рё РІС‹Р·РѕРІРѕРІ
 }
 
 Matrix Matrix::operator+(const Matrix& other) const {
@@ -519,35 +520,35 @@ Matrix Matrix::operator*(const Matrix& other) const {
     return result;
 }
 Matrix Matrix::operator/(const Matrix& other) const {
-    // Проверяем, что вторая матрица квадратная
+    // РџСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ РІС‚РѕСЂР°СЏ РјР°С‚СЂРёС†Р° РєРІР°РґСЂР°С‚РЅР°СЏ
     if (other.rows != other.cols) {
         throw matrixExeption("The divisor matrix must be square");
     }
 
-    // Умножаем первую матрицу на обратную
+    // РЈРјРЅРѕР¶Р°РµРј РїРµСЂРІСѓСЋ РјР°С‚СЂРёС†Сѓ РЅР° РѕР±СЂР°С‚РЅСѓСЋ
     return *this * other.inverse();
 }
 
-//Арифметика с накоплением (+=)
+//РђСЂРёС„РјРµС‚РёРєР° СЃ РЅР°РєРѕРїР»РµРЅРёРµРј (+=)
 Matrix& Matrix::operator+=(const Matrix& other) {
     if (rows != other.rows || cols != other.cols) {
         throw matrixExeption("Matrix dimensions must match for addition");
     }
     *this = *this + other;
-    return *this; // Возвращаем ссылку на текущий объект
+    return *this; // Р’РѕР·РІСЂР°С‰Р°РµРј СЃСЃС‹Р»РєСѓ РЅР° С‚РµРєСѓС‰РёР№ РѕР±СЉРµРєС‚
 }
 
-//Арифметика с накоплением (-=)
+//РђСЂРёС„РјРµС‚РёРєР° СЃ РЅР°РєРѕРїР»РµРЅРёРµРј (-=)
 Matrix& Matrix::operator-=(const Matrix& other) {
     if (rows != other.rows || cols != other.cols) {
         throw matrixExeption("Matrix dimensions must match for subtraction");
     }
     *this = *this - other;
-    return *this; // Возвращаем ссылку на текущий объект
+    return *this; // Р’РѕР·РІСЂР°С‰Р°РµРј СЃСЃС‹Р»РєСѓ РЅР° С‚РµРєСѓС‰РёР№ РѕР±СЉРµРєС‚
 }
 
 
-// Умножение матрицы на число
+// РЈРјРЅРѕР¶РµРЅРёРµ РјР°С‚СЂРёС†С‹ РЅР° С‡РёСЃР»Рѕ
 Matrix Matrix::operator*(double scalar) const {
     Matrix result(rows, cols);
     for (int i = 0; i < rows; ++i) {
@@ -557,7 +558,7 @@ Matrix Matrix::operator*(double scalar) const {
     }
     return result;
 }
-// Умножение числа на матрицу
+// РЈРјРЅРѕР¶РµРЅРёРµ С‡РёСЃР»Р° РЅР° РјР°С‚СЂРёС†Сѓ
 Matrix operator*(double scalar, const Matrix& matrix) {
     Matrix result(matrix.rows, matrix.cols);
     for (int i = 0; i < matrix.rows; ++i) {
@@ -565,5 +566,23 @@ Matrix operator*(double scalar, const Matrix& matrix) {
             result.at(i, j) = matrix.data[i][j] * scalar;
         }
     }
+    return result;
+}
+
+std::array<float, 16> Matrix::toGL() const {
+    if (rows != 4 || cols != 4) {
+        throw matrixExeption("Matrix must be 4x4 for OpenGL");
+    }
+
+    std::array<float, 16> result;
+
+    // column-major. СЃРЅР°С‡Р°Р»Р° СЃС‚РѕР»Р±С†С‹, РїРѕС‚РѕРј СЃС‚СЂРѕРєРё
+    int index = 0;
+    for (int col = 0; col < 4; ++col) {
+        for (int row = 0; row < 4; ++row) {
+            result[index++] = static_cast<float>(data[row][col]);
+        }
+    }
+
     return result;
 }
