@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <array>
 
 class Matrix {
 private:
@@ -10,11 +11,12 @@ private:
     int cols;
     double** data;
 
-    void allocateMemory(); // Выделение памяти
-    void freeMemory(); // Освовбождение памяти
+    void allocateMemory(); // Р’С‹РґРµР»РµРЅРёРµ РїР°РјСЏС‚Рё
+    void freeMemory(); // РћСЃРІРѕРІР±РѕР¶РґРµРЅРёРµ РїР°РјСЏС‚Рё
 
 public:
-    // Конструкторы и деструктор
+
+    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹ Рё РґРµСЃС‚СЂСѓРєС‚РѕСЂ
     Matrix(int rows, int cols);
     Matrix(int rows, int cols, double* arr);
     Matrix(int rows, int cols, double*& arr);
@@ -23,55 +25,58 @@ public:
     Matrix& operator=(const Matrix& other);
     ~Matrix();
 
-    // Методы
-    int getRows() const; // Получить количество строк
-    int getCols() const; // Получить количество столбцов
-    double& at(int row, int col); // Элемент на позиции (вернуть/присвоить) реализация виде метода
-    const double& at(int row, int col) const; // Для констнантных элементов на позиции (вернуть/присвоить)  реализация виде метода
-    void print() const; // Вывести матрицу в консоль
-    friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix); //Аналогично print()
+    // РњРµС‚РѕРґС‹
+    int getRows() const; // РџРѕР»СѓС‡РёС‚СЊ РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂРѕРє
+    int getCols() const; // РџРѕР»СѓС‡РёС‚СЊ РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚РѕР»Р±С†РѕРІ
+    double& at(int row, int col); // Р­Р»РµРјРµРЅС‚ РЅР° РїРѕР·РёС†РёРё (РІРµСЂРЅСѓС‚СЊ/РїСЂРёСЃРІРѕРёС‚СЊ) СЂРµР°Р»РёР·Р°С†РёСЏ РІРёРґРµ РјРµС‚РѕРґР°
+    const double& at(int row, int col) const; // Р”Р»СЏ РєРѕРЅСЃС‚РЅР°РЅС‚РЅС‹С… СЌР»РµРјРµРЅС‚РѕРІ РЅР° РїРѕР·РёС†РёРё (РІРµСЂРЅСѓС‚СЊ/РїСЂРёСЃРІРѕРёС‚СЊ)  СЂРµР°Р»РёР·Р°С†РёСЏ РІРёРґРµ РјРµС‚РѕРґР°
+    void print() const; // Р’С‹РІРµСЃС‚Рё РјР°С‚СЂРёС†Сѓ РІ РєРѕРЅСЃРѕР»СЊ
+    friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix); //РђРЅР°Р»РѕРіРёС‡РЅРѕ print()
 
-    //элементарные преобразования матриц
-    void multiplyRow(int row, double scalar); // Умножить строку на скаляр
-    void multiplyColumns(int col, double scalar); // Умножить столбец на скаляр
-    void swapRows(int row1, int row2); // Поменять строки местами
-    void swapColumns(int col1, int col2); // Поменять столбцы местами
-    void addRowMultiple(int sourceRow, int targetRow, double scalar); // Прибавление строки (c коэф)
-    void addColumnMultiple(int sourceCol, int targetCol, double scalar); // Прибавление столбца (c коэф)
+    //СЌР»РµРјРµРЅС‚Р°СЂРЅС‹Рµ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ РјР°С‚СЂРёС†
+    void multiplyRow(int row, double scalar); // РЈРјРЅРѕР¶РёС‚СЊ СЃС‚СЂРѕРєСѓ РЅР° СЃРєР°Р»СЏСЂ
+    void multiplyColumns(int col, double scalar); // РЈРјРЅРѕР¶РёС‚СЊ СЃС‚РѕР»Р±РµС† РЅР° СЃРєР°Р»СЏСЂ
+    void swapRows(int row1, int row2); // РџРѕРјРµРЅСЏС‚СЊ СЃС‚СЂРѕРєРё РјРµСЃС‚Р°РјРё
+    void swapColumns(int col1, int col2); // РџРѕРјРµРЅСЏС‚СЊ СЃС‚РѕР»Р±С†С‹ РјРµСЃС‚Р°РјРё
+    void addRowMultiple(int sourceRow, int targetRow, double scalar); // РџСЂРёР±Р°РІР»РµРЅРёРµ СЃС‚СЂРѕРєРё (c РєРѕСЌС„)
+    void addColumnMultiple(int sourceCol, int targetCol, double scalar); // РџСЂРёР±Р°РІР»РµРЅРёРµ СЃС‚РѕР»Р±С†Р° (c РєРѕСЌС„)
 
-    double trace() const; // Нахождение следа матрицы
-    Matrix transpose() const; // Транспонированная матрица
-    double determinant() const; // Определитель методом Гаусса
-    Matrix inverse() const; // Обратная матрица
+    double trace() const; // РќР°С…РѕР¶РґРµРЅРёРµ СЃР»РµРґР° РјР°С‚СЂРёС†С‹
+    Matrix transpose() const; // РўСЂР°РЅСЃРїРѕРЅРёСЂРѕРІР°РЅРЅР°СЏ РјР°С‚СЂРёС†Р°
+    double determinant() const; // РћРїСЂРµРґРµР»РёС‚РµР»СЊ РјРµС‚РѕРґРѕРј Р“Р°СѓСЃСЃР°
+    Matrix inverse() const; // РћР±СЂР°С‚РЅР°СЏ РјР°С‚СЂРёС†Р°
 
-    // Операторы
+    // РћРїРµСЂР°С‚РѕСЂС‹
 
-    double& operator()(int row, int col); // Элемент на позиции (вернуть/присвоить) реализация ввиде перегрузки (n, m)
-    const double& operator()(int row, int col) const; // Для констнантных элементов на позиции (вернуть/присвоить) реализация ввиде перегрузки (n, m)
+    double& operator()(int row, int col); // Р­Р»РµРјРµРЅС‚ РЅР° РїРѕР·РёС†РёРё (РІРµСЂРЅСѓС‚СЊ/РїСЂРёСЃРІРѕРёС‚СЊ) СЂРµР°Р»РёР·Р°С†РёСЏ РІРІРёРґРµ РїРµСЂРµРіСЂСѓР·РєРё (n, m)
+    const double& operator()(int row, int col) const; // Р”Р»СЏ РєРѕРЅСЃС‚РЅР°РЅС‚РЅС‹С… СЌР»РµРјРµРЅС‚РѕРІ РЅР° РїРѕР·РёС†РёРё (РІРµСЂРЅСѓС‚СЊ/РїСЂРёСЃРІРѕРёС‚СЊ) СЂРµР°Р»РёР·Р°С†РёСЏ РІРІРёРґРµ РїРµСЂРµРіСЂСѓР·РєРё (n, m)
 
-    // Логические операторы
+    // Р›РѕРіРёС‡РµСЃРєРёРµ РѕРїРµСЂР°С‚РѕСЂС‹
     bool operator>(const Matrix& other) const;
     bool operator<(const Matrix& other) const;
     bool operator==(const Matrix& other) const;
     bool operator!=(const Matrix& other) const;
 
 
-    // Операторы инкрементации и декрементации
-    Matrix& operator++();    // Префиксный инкремент (++m)
-    Matrix operator++(int); // Постфиксный инкремент (m++)
-    Matrix& operator--();    // Префиксный декремент (--m)
-    Matrix operator--(int); // Постфиксный декремент (m--)
+    // РћРїРµСЂР°С‚РѕСЂС‹ РёРЅРєСЂРµРјРµРЅС‚Р°С†РёРё Рё РґРµРєСЂРµРјРµРЅС‚Р°С†РёРё
+    Matrix& operator++();    // РџСЂРµС„РёРєСЃРЅС‹Р№ РёРЅРєСЂРµРјРµРЅС‚ (++m)
+    Matrix operator++(int); // РџРѕСЃС‚С„РёРєСЃРЅС‹Р№ РёРЅРєСЂРµРјРµРЅС‚ (m++)
+    Matrix& operator--();    // РџСЂРµС„РёРєСЃРЅС‹Р№ РґРµРєСЂРµРјРµРЅС‚ (--m)
+    Matrix operator--(int); // РџРѕСЃС‚С„РёРєСЃРЅС‹Р№ РґРµРєСЂРµРјРµРЅС‚ (m--)
 
-    // математические операторы
-    Matrix operator+(const Matrix& other) const; // Оператор сложения матриц
-    Matrix operator-(const Matrix& other) const; // Оператор вычитания матриц
-    Matrix operator*(const Matrix& other) const; // Оператор умножения матриц
-    Matrix operator/(const Matrix& other) const; // Оператор деления матриц
-    Matrix& operator+=(const Matrix& other); // Арифметика с накоплением
-    Matrix& operator-=(const Matrix& other); // Арифметика с накоплением
+    // РјР°С‚РµРјР°С‚РёС‡РµСЃРєРёРµ РѕРїРµСЂР°С‚РѕСЂС‹
+    Matrix operator+(const Matrix& other) const; // РћРїРµСЂР°С‚РѕСЂ СЃР»РѕР¶РµРЅРёСЏ РјР°С‚СЂРёС†
+    Matrix operator-(const Matrix& other) const; // РћРїРµСЂР°С‚РѕСЂ РІС‹С‡РёС‚Р°РЅРёСЏ РјР°С‚СЂРёС†
+    Matrix operator*(const Matrix& other) const; // РћРїРµСЂР°С‚РѕСЂ СѓРјРЅРѕР¶РµРЅРёСЏ РјР°С‚СЂРёС†
+    Matrix operator/(const Matrix& other) const; // РћРїРµСЂР°С‚РѕСЂ РґРµР»РµРЅРёСЏ РјР°С‚СЂРёС†
+    Matrix& operator+=(const Matrix& other); // РђСЂРёС„РјРµС‚РёРєР° СЃ РЅР°РєРѕРїР»РµРЅРёРµРј
+    Matrix& operator-=(const Matrix& other); // РђСЂРёС„РјРµС‚РёРєР° СЃ РЅР°РєРѕРїР»РµРЅРёРµРј
 
-    Matrix operator*(double scalar) const; // Умножение матрицы на число
-    friend Matrix operator*(double scalar, const Matrix& matrix); // Умножение "числа на матрицу" (аналогично предыдушему)
+    Matrix operator*(double scalar) const; // РЈРјРЅРѕР¶РµРЅРёРµ РјР°С‚СЂРёС†С‹ РЅР° С‡РёСЃР»Рѕ
+    friend Matrix operator*(double scalar, const Matrix& matrix); // РЈРјРЅРѕР¶РµРЅРёРµ "С‡РёСЃР»Р° РЅР° РјР°С‚СЂРёС†Сѓ" (Р°РЅР°Р»РѕРіРёС‡РЅРѕ РїСЂРµРґС‹РґСѓС€РµРјСѓ)
+
+    std::array<float, 16> toGL() const; //РјРµС‚РѕРґ РґР»СЏ opengl
+
 };
 
-#endif // MATRIX_H
+#endif MATRIX_H
